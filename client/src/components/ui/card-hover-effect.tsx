@@ -24,21 +24,21 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-4 gap-4",
+        "flex flex-col py-4 gap-3",
         className
       )}
     >
       {items.map((item, idx) => (
         <div
           key={item.id}
-          className="relative group block p-2 h-full w-full"
+          className="relative group block p-0 w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
               <motion.span
-                className="absolute inset-0 h-full w-full bg-primary/10 block rounded-3xl"
+                className="absolute inset-0 h-full w-full bg-primary/5 block rounded-xl"
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
                 animate={{
@@ -52,36 +52,39 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card>
-            <div className="flex justify-between items-start mb-2">
-              <span className="text-xs font-bold px-2 py-1 rounded bg-primary/10 text-primary">
-                {item.code}
-              </span>
-              <div className="flex gap-2">
+          <Card className="p-3 md:p-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-3 flex-1">
+                <span className="text-xs font-bold px-2 py-1 rounded-lg bg-primary/10 text-primary whitespace-nowrap">
+                  {item.code}
+                </span>
+                <CardTitle className="text-base md:text-lg">{item.name}</CardTitle>
+                <CardDescription className="flex items-center gap-2 whitespace-nowrap">
+                  <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
+                  {item.location}
+                </CardDescription>
+                {item.notes && (
+                  <p className="text-sm text-muted-foreground line-clamp-1 md:line-clamp-2 border-r-2 pr-3 border-border/50">
+                    {item.notes}
+                  </p>
+                )}
+              </div>
+              
+              <div className="flex gap-2 justify-end pt-2 md:pt-0 border-t md:border-t-0 border-border/30">
                 <button 
                   onClick={() => onEdit(item)}
-                  className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                  className="px-3 py-1 rounded-lg text-muted-foreground hover:text-primary hover:bg-primary/5 transition-all text-sm font-medium"
                 >
                   تعديل
                 </button>
                 <button 
                   onClick={() => onDelete(item.id)}
-                  className="text-muted-foreground hover:text-destructive transition-colors text-sm"
+                  className="px-3 py-1 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all text-sm font-medium"
                 >
                   حذف
                 </button>
               </div>
             </div>
-            <CardTitle>{item.name}</CardTitle>
-            <CardDescription className="mt-2 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
-              {item.location}
-            </CardDescription>
-            {item.notes && (
-              <p className="mt-4 text-sm text-muted-foreground line-clamp-2">
-                {item.notes}
-              </p>
-            )}
           </Card>
         </div>
       ))}
